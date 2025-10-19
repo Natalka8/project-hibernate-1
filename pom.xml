@@ -19,32 +19,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- Spring 5 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
 
 		<!-- Servlet API -->
 		<dependency>
@@ -164,7 +138,6 @@
 			<version>3.9.1</version>
 		</dependency>
 
-		<!-- JAXB для Java 21 -->
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
@@ -176,7 +149,7 @@
 			<version>4.0.0</version>
 		</dependency>
 
-		<!-- Для работы с датами в Jackson -->
+		<!-- For working with dates in Jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
@@ -194,12 +167,6 @@
 					<source>21</source>
 					<target>21</target>
 					<encoding>UTF-8</encoding>
-					<compilerArgs>
-						<arg>--add-opens</arg>
-						<arg>java.base/java.lang=ALL-UNNAMED</arg>
-						<arg>--add-opens</arg>
-						<arg>java.base/java.util=ALL-UNNAMED</arg>
-					</compilerArgs>
 				</configuration>
 			</plugin>
 
@@ -217,7 +184,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Tomcat Plugin для деплоя -->
+			<!-- Tomcat Plugin for deployment -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>

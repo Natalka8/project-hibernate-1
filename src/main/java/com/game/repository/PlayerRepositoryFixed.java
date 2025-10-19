@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.query.Query;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 @WebListener
-public class PlayerRepositoryDB implements PlayerRepository, ServletContextListener {
+public class PlayerRepositoryFixed implements PlayerRepository, ServletContextListener {
 
     private static SessionFactory sessionFactory;
 
@@ -26,7 +25,7 @@ public class PlayerRepositoryDB implements PlayerRepository, ServletContextListe
             properties.put(Environment.DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
             properties.put(Environment.URL, "jdbc:p6spy:mysql://localhost:3306/rpg?useSSL=false&serverTimezone=UTC");
             properties.put(Environment.USER, "root");
-            properties.put(Environment.PASS, "261508arnLAR!");
+            properties.put(Environment.PASS, "ваш_пароль");
             properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
             properties.put(Environment.SHOW_SQL, "true");
             properties.put(Environment.HBM2DDL_AUTO, "update");
@@ -41,29 +40,9 @@ public class PlayerRepositoryDB implements PlayerRepository, ServletContextListe
 
             System.out.println("Hibernate SessionFactory created successfully");
 
-            // Test connection
-            testConnection();
-
         } catch (Exception e) {
             System.err.println("Failed to create Hibernate SessionFactory: " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    private void testConnection() {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            // A simple test query
-            Long count = session.createQuery("SELECT COUNT(p) FROM Player p", Long.class)
-                    .getSingleResult();
-            System.out.println("Test connection successful. Players in DB: " + count);
-        } catch (Exception e) {
-            System.err.println("Test connection failed: " + e.getMessage());
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -79,10 +58,14 @@ public class PlayerRepositoryDB implements PlayerRepository, ServletContextListe
     public List<Player> getAll(int pageNumber, int pageSize) {
         Session session = sessionFactory.openSession();
         try {
-            Query<Player> query = session.createQuery("FROM Player p", Player.class);
-            query.setFirstResult(pageNumber * pageSize);
-            query.setMaxResults(pageSize);
-            return query.list();
+            // We use HQL instead of Native SQL
+            return session.createQuery("FROM Player", Player.class)
+                    .setFirstResult(pageNumber * pageSize)
+                    .setMaxResults(pageSize)
+                    .getResultList();
+        } catch (Exception e) {
+            System.err.println("Error in getAll: " + e.getMessage());
+            throw e;
         } finally {
             session.close();
         }
@@ -92,7 +75,7 @@ public class PlayerRepositoryDB implements PlayerRepository, ServletContextListe
     public int getAllCount() {
         Session session = sessionFactory.openSession();
         try {
-            return ((Long) session.createNamedQuery("Player.getAllCount")
+            return ((Long) session.createQuery("SELECT COUNT(p) FROM Player p")
                     .getSingleResult()).intValue();
         } catch (Exception e) {
             System.err.println("Error in getAllCount: " + e.getMessage());
@@ -168,8 +151,7 @@ public class PlayerRepositoryDB implements PlayerRepository, ServletContextListe
         }
     }
 
-    // Static method for getting the repository
-    public static PlayerRepositoryDB getInstance() {
-        return new PlayerRepositoryDB();
+    public static PlayerRepositoryFixed getInstance() {
+        return new PlayerRepositoryFixed();
     }
 }

@@ -4,8 +4,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "player")
+@Table(name = "player", schema = "rpg")
+@NamedQuery(name = "Player.getAllCount", query = "SELECT COUNT(p) FROM Player p")
 public class Player {
+    private Date birthdate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,7 +15,7 @@ public class Player {
     @Column(name = "name", length = 12, nullable = false)
     private String name;
 
-    @Column(name = "title", length = 30)
+    @Column(name = "title", length = 30, nullable = false)
     private String title;
 
     @Enumerated(EnumType.STRING)
@@ -24,26 +26,36 @@ public class Player {
     @Column(name = "profession")
     private Profession profession;
 
-    @Column(name = "birthday")
-    @Temporal(TemporalType.DATE)
-    private Date birthday;
-
-    @Column(name = "banned")
-    private Boolean banned;
-
-    @Column(name = "experience")
+    @Column(name = "experience", nullable = false)
     private Integer experience;
 
-    @Column(name = "level")
+    @Column(name = "level", nullable = false)
     private Integer level;
 
-    @Column(name = "untilNextLevel")
+    @Column(name = "untilNextLevel", nullable = false)
     private Integer untilNextLevel;
 
-    // Конструктор по умолчанию (обязателен для Hibernate)
-    public Player() {}
+    @Column(name = "banned", nullable = false)
+    private Boolean banned;
 
-    // Геттеры и сеттеры
+    // Constructors
+    public Player() {
+    }
+
+    public Player(String name, String title, Race race, Profession profession,
+                  Integer experience, Integer level, Integer untilNextLevel,
+                  Boolean banned) {
+        this.name = name;
+        this.title = title;
+        this.race = race;
+        this.profession = profession;
+        this.experience = experience;
+        this.level = level;
+        this.untilNextLevel = untilNextLevel;
+        this.banned = banned;
+    }
+
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -59,17 +71,8 @@ public class Player {
     public Profession getProfession() { return profession; }
     public void setProfession(Profession profession) { this.profession = profession; }
 
-    public Date getBirthday() { return birthday; }
-    public void setBirthday(Date birthday) { this.birthday = birthday; }
-
-    public Boolean getBanned() { return banned; }
-    public void setBanned(Boolean banned) { this.banned = banned; }
-
     public Integer getExperience() { return experience; }
-    public void setExperience(Integer experience) {
-        this.experience = experience;
-        calculateLevel();
-    }
+    public void setExperience(Integer experience) { this.experience = experience; }
 
     public Integer getLevel() { return level; }
     public void setLevel(Integer level) { this.level = level; }
@@ -77,15 +80,13 @@ public class Player {
     public Integer getUntilNextLevel() { return untilNextLevel; }
     public void setUntilNextLevel(Integer untilNextLevel) { this.untilNextLevel = untilNextLevel; }
 
-    // Метод для расчета уровня
-    private void calculateLevel() {
-        if (experience == null) return;
-
-        int lvl = (int) (Math.sqrt(2500 + 200 * experience) - 50) / 100;
-        this.level = lvl;
-
-        if (level != null) {
-            this.untilNextLevel = 50 * (level + 1) * (level + 2) - experience;
-        }
+    public Boolean getBanned() { return banned; }
+    public void setBanned(Boolean banned) { this.banned = banned; }
+    public Date getBirthdate() {
+        return birthdate;
     }
+
+    public void setBirthdate(Date date) {
+        this.birthdate = date;
+}
 }
