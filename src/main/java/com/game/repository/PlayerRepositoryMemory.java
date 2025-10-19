@@ -5,67 +5,90 @@ import com.game.entity.Profession;
 import com.game.entity.Race;
 import org.springframework.stereotype.Repository;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository(value = "memory")
 public class PlayerRepositoryMemory implements IPlayerRepository {
 
-    private static final List<Player> storage = new CopyOnWriteArrayList<Player>() {{
-        add(new Player(1L, "Ниус", "Приходящий Без Шума", Race.HOBBIT, Profession.ROGUE, new Date(1244497480000L), false, 33));
-        add(new Player(2L, "Никрашш", "НайтВульф", Race.ORC, Profession.WARRIOR, new Date(1152424240000L), false, 58));
-        add(new Player(4L, "Эззэссэль", "шипящая", Race.DWARF, Profession.CLERIC, new Date(1243201400000L), true, 3));
-        add(new Player(5L, "Бэлан", "Тсе Раа", Race.DWARF, Profession.ROGUE, new Date(1241378440000L), true, 29));
-        add(new Player(6L, "Элеонора", "Бабушка", Race.HUMAN, Profession.SORCERER, new Date(1214155000000L), true, 35));
-        add(new Player(7L, "Эман", "Ухастый Летун", Race.ELF, Profession.SORCERER, new Date(1214772360000L), false, 56));
-        add(new Player(8L, "Талан", "Рожденный в Бронксе", Race.GIANT, Profession.ROGUE, new Date(1217853300000L), false, 36));
-        add(new Player(9L, "Арилан", "Благотворитель", Race.ELF, Profession.SORCERER, new Date(1216022000000L), false, 34));
-        add(new Player(10L, "Деракт", "Эльфёнок Красное Ухо", Race.ELF, Profession.ROGUE, new Date(1215043720000L), false, 55));
-        add(new Player(12L, "Архилл", "Смертоносный", Race.GIANT, Profession.PALADIN, new Date(1243141000000L), false, 38));
-        add(new Player(13L, "Эндарион", "Маленький эльфенок", Race.ELF, Profession.DRUID, new Date(1219611120000L), false, 45));
-        add(new Player(17L, "Фаэрвин", "Темный Идеолог", Race.HUMAN, Profession.NAZGUL, new Date(1216967280000L), false, 12));
-        add(new Player(18L, "Харидин", "Бедуин", Race.TROLL, Profession.WARRIOR, new Date(1211454600000L), false, 47));
-        add(new Player(19L, "Джур", "БоРец с жАжДой", Race.ORC, Profession.DRUID, new Date(1211860680000L), false, 23));
-        add(new Player(20L, "Грон", "оин обреченный на бой", Race.GIANT, Profession.PALADIN, new Date(1218401160000L), false, 58));
-        add(new Player(21L, "Морвиел", "Копье Калимы", Race.ELF, Profession.CLERIC, new Date(1244696560000L), false, 31));
-        add(new Player(22L, "Ннуфис", "ДиамантоваЯ", Race.HUMAN, Profession.ROGUE, new Date(1214556360000L), false, 56));
-        add(new Player(25L, "Ырх", "Троль гнет ель", Race.TROLL, Profession.WARRIOR, new Date(1244687920000L), true, 51));
-        add(new Player(26L, "Блэйк", "Серый Воин", Race.HUMAN, Profession.ROGUE, new Date(1242512800000L), false, 54));
-        add(new Player(27L, "Нэсс", "Бусинка", Race.TROLL, Profession.WARRIOR, new Date(1216022000000L), true, 35));
-        add(new Player(28L, "Ферин", "Воитель", Race.TROLL, Profession.WARRIOR, new Date(1216582000000L), false, 48));
-        add(new Player(29L, "Солках", "Ученик Магии", Race.ELF, Profession.SORCERER, new Date(1211843400000L), false, 54));
-        add(new Player(30L, "Сцинк", "Титан Войны", Race.GIANT, Profession.WARRIOR, new Date(1216315760000L), true, 41));
-        add(new Player(32L, "Айша", "Искусительница", Race.HUMAN, Profession.CLERIC, new Date(1217761800000L), false, 45));
-        add(new Player(33L, "Тант", "Черт закAтай вату", Race.DWARF, Profession.PALADIN, new Date(1214741200000L), false, 25));
-        add(new Player(34L, "Трениган", "Великий Волшебник", Race.ELF, Profession.SORCERER, new Date(1216020000000L), false, 42));
-        add(new Player(35L, "Вуджер", "Печальный", Race.TROLL, Profession.NAZGUL, new Date(1210163720000L), false, 42));
-        add(new Player(36L, "Камираж", "БAнкир", Race.DWARF, Profession.CLERIC, new Date(1216454000000L), true, 39));
-        add(new Player(41L, "Ларкин", "СвЯтой", Race.HOBBIT, Profession.CLERIC, new Date(1219740720000L), false, 46));
-        add(new Player(42L, "Зандир", "Темновидец", Race.ELF, Profession.WARRIOR, new Date(1214850120000L), false, 23));
-        add(new Player(43L, "Балгор", "пещерный Урук", Race.ORC, Profession.NAZGUL, new Date(1211597960000L), false, 18));
-        add(new Player(44L, "Регарн", "юбитель ОЛивье", Race.GIANT, Profession.WARRIOR, new Date(1197692680000L), false, 53));
-        add(new Player(45L, "Анжелли", "Молодой Боец", Race.DWARF, Profession.WARRIOR, new Date(1247890000000L), false, 33));
-        add(new Player(23L, "Джерис", "Имперский Воин", Race.ORC, Profession.WARRIOR, new Date(1216630320000L), false, 58));
-        add(new Player(46L, "Жэкс", "Ярочкино Солнышко", Race.GIANT, Profession.WARRIOR, new Date(1214879560000L), false, 3));
-        add(new Player(47L, "Филуэль", "Химик и Карпускулярник.", Race.ELF, Profession.WARRIOR, new Date(1244445640000L), false, 30));
-        add(new Player(48L, "Яра", "Прельстивая", Race.HUMAN, Profession.CLERIC, new Date(1241309300000L), false, 52));
-        add(new Player(49L, "Иллинас", "Иероглиф", Race.HOBBIT, Profession.WARRIOR, new Date(1240834120000L), false, 47));
-        add(new Player(50L, "Ардонг", "Вспышк A", Race.HUMAN, Profession.WARRIOR, new Date(1217537160000L), false, 21));
-        add(new Player(52L, "Аттирис", "и.о.Карвандоса", Race.ELF, Profession.SORCERER, new Date(1245050800000L), true, 34));
-    }};
+    private static final List<Player> storage = new CopyOnWriteArrayList<>();
+    private static final AtomicLong idCounter = new AtomicLong(300);
+
+    static {
+        // Инициализация тестовых данных
+        storage.add(createPlayer(1L, "Huyc", "Приходящий Без Шума", Race.HOBBIT, Profession.ROGUE,
+                createDate(2000, 0, 1), false, 1000));
+        storage.add(createPlayer(2L, "Никраши", "НайтВульф", Race.ORC, Profession.WARRIOR,
+                createDate(2001, 1, 15), false, 2000));
+        storage.add(createPlayer(3L, "Зазэссоль", "Шипящая", Race.DWARF, Profession.CLERIC,
+                createDate(1999, 2, 20), false, 1500));
+        storage.add(createPlayer(4L, "Бэлан", "Тсе Раа", Race.DWARF, Profession.ROGUE,
+                createDate(2002, 3, 10), false, 1800));
+        storage.add(createPlayer(5L, "Элеонора", "Бабушка", Race.HUMAN, Profession.SORCERER,
+                createDate(1998, 4, 5), false, 2500));
+        storage.add(createPlayer(6L, "Эман", "Ухастый Летун", Race.ELF, Profession.SORCERER,
+                createDate(2003, 5, 25), false, 1200));
+        storage.add(createPlayer(7L, "Талан", "Рожденный в Бронксе", Race.GIANT, Profession.WARRIOR,
+                createDate(2001, 6, 30), false, 3000));
+        storage.add(createPlayer(8L, "Арилан", "Благотворитель", Race.ELF, Profession.CLERIC,
+                createDate(2000, 7, 12), false, 1700));
+        storage.add(createPlayer(9L, "Деракт", "Эльфёнок Красное Ухо", Race.ELF, Profession.ROGUE,
+                createDate(2004, 8, 8), false, 900));
+        storage.add(createPlayer(10L, "Архилл", "Смертоносный", Race.GIANT, Profession.WARRIOR,
+                createDate(1997, 9, 18), false, 3500));
+        storage.add(createPlayer(11L, "Зндармон", "Маленький эльфенок", Race.ELF, Profession.SORCERER,
+                createDate(2005, 10, 22), false, 800));
+        storage.add(createPlayer(12L, "Фазовин", "Темный Идеолог", Race.HUMAN, Profession.WARLOCK,
+                createDate(1996, 11, 3), false, 2200));
+        storage.add(createPlayer(13L, "Хардин", "Бедуин", Race.TROLL, Profession.WARRIOR,
+                createDate(2002, 0, 14), false, 2800));
+        storage.add(createPlayer(14L, "Джур", "Борец с жаждой", Race.ORC, Profession.WARRIOR,
+                createDate(2001, 1, 28), false, 1900));
+        storage.add(createPlayer(15L, "Грон", "Они обреченный на бой", Race.GIANT, Profession.WARRIOR,
+                createDate(1995, 2, 7), false, 4000));
+        storage.add(createPlayer(16L, "Морвиел", "Копье Калимы", Race.ELF, Profession.WARRIOR,
+                createDate(2003, 3, 19), false, 2100));
+        storage.add(createPlayer(17L, "Ниуфис", "Диамантовая", Race.HUMAN, Profession.CLERIC,
+                createDate(2000, 4, 11), false, 1600));
+        storage.add(createPlayer(18L, "Ырх", "Тропь Гнет ель", Race.TROLL, Profession.WARRIOR,
+                createDate(1999, 5, 23), false, 3200));
+        storage.add(createPlayer(19L, "Блэйк", "Серый Воин", Race.HUMAN, Profession.WARRIOR,
+                createDate(2004, 6, 30), false, 2300));
+    }
+
+    // Метод для создания игрока (как у вас в примере)
+    private static Player createPlayer(Long id, String name, String title, Race race,
+                                       Profession profession, Date birthday, Boolean banned,
+                                       Integer experience) {
+        Player player = new Player();
+        player.setId(id);
+        player.setName(name);
+        player.setTitle(title);
+        player.setRace(race);
+        player.setProfession(profession);
+        player.setBirthday(birthday);
+        player.setBanned(banned);
+        player.setExperience(experience);
+        return player;
+    }
+
+    // Вспомогательный метод для создания даты
+    private static Date createDate(int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, day, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
 
     @Override
     public List<Player> getAll(int pageNumber, int pageSize) {
-        return storage.stream()
-                .sorted(Comparator.comparingLong(Player::getId))
-                .skip((long) pageNumber * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
-
+        int fromIndex = pageNumber * pageSize;
+        if (fromIndex >= storage.size()) {
+            return new ArrayList<>();
+        }
+        int toIndex = Math.min(fromIndex + pageSize, storage.size());
+        return new ArrayList<>(storage.subList(fromIndex, toIndex));
     }
 
     @Override
@@ -75,30 +98,42 @@ public class PlayerRepositoryMemory implements IPlayerRepository {
 
     @Override
     public Player save(Player player) {
-        player.setId(getMaxId() + 1);
+        if (player.getId() == null) {
+            player.setId(idCounter.incrementAndGet());
+        }
         storage.add(player);
         return player;
     }
 
     @Override
     public Player update(Player player) {
-        return player;
+        Optional<Player> existingPlayer = storage.stream()
+                .filter(p -> p.getId().equals(player.getId()))
+                .findFirst();
+
+        if (existingPlayer.isPresent()) {
+            storage.remove(existingPlayer.get());
+            storage.add(player);
+            return player;
+        }
+        return null;
     }
 
     @Override
-    public Optional<Player> findById(long id) {
-        return storage.stream().filter(player -> id == player.getId()).findFirst();
-    }
-
-    @Override
-    public void delete(Player player) {
-        storage.remove(player);
-    }
-
-    private long getMaxId() {
+    public Player getById(Long id) {
         return storage.stream()
-                .map(Player::getId)
-                .max(Long::compareTo)
-                .orElse(1L);
+                .filter(player -> player.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Player findById(long id) {
+        return getById(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        storage.removeIf(player -> player.getId().equals(id));
     }
 }
