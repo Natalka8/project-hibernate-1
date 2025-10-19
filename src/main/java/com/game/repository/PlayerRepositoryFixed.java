@@ -17,7 +17,6 @@ import java.util.Properties;
 public class PlayerRepositoryFixed implements PlayerRepository, ServletContextListener {
 
     private static SessionFactory sessionFactory;
-
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {

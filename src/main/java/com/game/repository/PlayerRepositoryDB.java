@@ -167,7 +167,6 @@ public class PlayerRepositoryDB implements PlayerRepository, ServletContextListe
             session.close();
         }
     }
-
     // Static method for getting the repository
     public static PlayerRepositoryDB getInstance() {
         return new PlayerRepositoryDB();

@@ -12,7 +12,6 @@
   <li><a href="html/my.html">Admin Panel (Full Interface)</a></li>
   <li><a href="players.jsp">Players List</a></li>
 </ul>
-
 <h2>Quick Info:</h2>
 <p>Total Players in Database: 10</p>
 <p>Hibernate: Connected</p>

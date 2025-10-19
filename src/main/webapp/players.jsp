@@ -46,7 +46,6 @@
     </tr>
     <% } %>
 </table>
-
 <br>
 <a href="html/my.html">Full Management Interface</a> |
 <a href="index.jsp">Back to Home</a>

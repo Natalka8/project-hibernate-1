@@ -1,5 +1,4 @@
 package com.game.config;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 

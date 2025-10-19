@@ -1,5 +1,6 @@
 package com.game.entity;
 
+
 public enum Race {
     HUMAN,      // 0
     DWARF,      // 1

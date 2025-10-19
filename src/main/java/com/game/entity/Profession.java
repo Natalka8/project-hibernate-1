@@ -1,5 +1,6 @@
 package com.game.entity;
 
+
 public enum Profession {
     WARRIOR,    // 0
     ROGUE,      // 1

@@ -85,7 +85,6 @@ public class Player {
     public Date getBirthdate() {
         return birthdate;
     }
-
     public void setBirthdate(Date date) {
         this.birthdate = date;
 }
